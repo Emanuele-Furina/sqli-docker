@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4-apache-bullseye
 
 # Install necessary PHP extensions
 RUN docker-php-ext-install mysqli
