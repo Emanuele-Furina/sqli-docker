@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Injection Login Form</title>
 </head>
-<body>
-    <h1>Login Form</h1>
-    <form method="POST" action="">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" value="Login">
-    </form>
 
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+<body>
+    <div class="container">
+        <h1>Login Form</h1>
+        <form method="POST" action="">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <input type="submit" value="Login">
+        </form>
+
+        <?php
         include 'db.php';
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $result = executeQuery($query);
-
-        if ($result) {
-            echo "Login successful!";
+        if ($pdo) {
+            echo '<div class="status" style="color: green;">Connected to the database successfully.</div>';
         } else {
-            echo "Invalid username or password.";
+            echo '<div class="status" style="color: red;">Failed to connect to the database.</div>';
         }
-    }
-    ?>
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $query = "SELECT * FROM utenti WHERE username = '$username' AND password = '$password'";
+            $result = $pdo->query($query);
+
+            if ($result && $result->rowCount() > 0) {
+                echo '<div class="status" style="color: green;">Login successful!</div>';
+            } else {
+                echo '<div class="status" style="color: red;">Invalid username or password.</div>';
+            }
+        }
+        ?>
+    </div>
 </body>
+
 </html>
