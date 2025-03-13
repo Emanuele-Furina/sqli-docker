@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     php7.4 \
     libapache2-mod-php7.4 \
     php7.4-mysql \
-    mysql-client \
+    default-mysql-client \
     default-mysql-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -30,13 +30,6 @@ RUN sed -i 's!/var/www/html!/var/www/html!g' /etc/apache2/sites-available/defaul
 
 # Expose port 80
 EXPOSE 80
-
-
-RUN echo "mysql-server mysql-server/root_password qwe123" | debconf-set-selections
-RUN echo "mysql-server mysql-server/root_password_again qwe123" | debconf-set-selections
-
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y ...
 
 # Start Apache
 CMD ["apache2ctl", "-D", "FOREGROUND"]
