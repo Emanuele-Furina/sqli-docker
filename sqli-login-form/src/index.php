@@ -21,6 +21,8 @@
         </form>
 
         <?php
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
         include 'db.php';
 
         if ($pdo) {
@@ -32,7 +34,12 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $username = $_POST['username'];
             $password = $_POST['password'];
+
+            //DO NOT DO THIS IN REAL LIFE. THIS IS FOR DEMONSTRATION PURPOSES ONLY.
             $query = "SELECT * FROM utenti WHERE username = '$username' AND password = '$password'";
+            //Another way to make it even more unsafe
+            //$query = eval("return \"SELECT * FROM utenti WHERE username = '$username' AND password = '$password';\";");
+
             $result = $pdo->query($query);
 
             if ($result && $result->rowCount() > 0) {
